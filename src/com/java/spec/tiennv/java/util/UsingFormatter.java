@@ -1,22 +1,62 @@
 package com.java.spec.tiennv.java.util;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.Calendar;
 import java.util.Formatter;
-import java.util.Locale;
 
 public class UsingFormatter {
 
-	public static void main(String args[]) {
+	public static void main(String[] args) {
+		Calendar calendar = Calendar.getInstance();
+		String s = String.format("My birthday: %1$tA  %1$tb, %1$te, %1$tY" , calendar);
 		
-		StringBuilder sb = new StringBuilder();
+		System.out.println(s);
 		
-		Formatter formatter = new Formatter(sb, Locale.US);
+		s = String.format("My birthday: %1$tA  %1$t\u0042, %1$te, %1$tY" , calendar);
 		
-		formatter.format("%4$2s %3$2s %2$2s %1$2s", "a", "b", "c", "d");
+		System.out.println(s);
 		
-		System.out.println(sb.toString());
+		s = String.format("Duke's Birthday: %1$tm %1$te,%1$tY", calendar);
 		
-		formatter.format(Locale.FRANCE, "e = %+10.4f", Math.E);
+		System.out.println(s);
 		
-		System.out.println(sb.toString());
+		s = String.format("Duke's Birthday: %1$tm %<te,%<tY", calendar);
+		
+		System.out.println(s);
+		
+		Formatter formatter = new Formatter();
+		formatter.format("%s %s %<s %<s", "a", "b", "c", "d");
+		System.out.println(formatter.toString());
+		formatter.close();
+		
+		
+		
+		formatter = new Formatter();
+		formatter.format("%2$s %s %<s %s", "a", "b", "c", "d");
+		System.out.println(formatter.toString());
+		formatter.close();
+		
+		
+		try {
+			File file = new File("test.txt");
+			formatter = new Formatter(file);
+			formatter.format("my birthday: %1$tA  %1$tB, %1$te, %1$tY" , calendar);
+			formatter.close();
+			
+			BufferedReader reader = new BufferedReader(new FileReader(file));
+			String currentLine;
+			while ((currentLine = reader.readLine())  != null) {
+				System.out.println(currentLine);
+			}
+			
+			reader.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} 
+		
 	}
+
 }
