@@ -1,4 +1,4 @@
-package com.java.spec.tiennv.java.lang;
+package com.java.spec.tiennv.java.util;
 
 import java.util.ArrayList;
 import java.util.Iterator;
