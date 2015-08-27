@@ -27,11 +27,15 @@ public class UsingIterator {
 	      
 	      ListIterator<String> listIterator = al.listIterator();
 	      
-	      //modify objects being iterated
+	      //modify objects being iterated and remove object starts with A
 	      
 	      while (listIterator.hasNext()) {
-	    	  Object s = listIterator.next();
-	    	  listIterator.set(s + "(updated)");
+	    	  String s = listIterator.next();
+	    	  if (s.startsWith("A")) {
+	    		  listIterator.remove();
+	    	  } else {
+	    		  listIterator.set(s + "(updated)");
+	    	  }
 	      }
 	      
 	      iterator = al.iterator();
@@ -39,12 +43,16 @@ public class UsingIterator {
 	    	  System.out.print(iterator.next() + " ");
 	      }
 	      
+	      System.out.println();
+	      
+	      
 	      //display list backward
 	      
 	      while (listIterator.hasPrevious()) {
 	    	  Object element = listIterator.previous();
-	    	  System.out.println(element + " ");
+	    	  System.out.print(element + " ");
 	      }
+	      
 	      
 	      System.out.println();
 	      
