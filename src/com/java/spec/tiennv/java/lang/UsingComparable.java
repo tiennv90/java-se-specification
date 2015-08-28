@@ -37,6 +37,7 @@ public class UsingComparable {
 	
 }
 
+//object to be sorted
 class IntegerComparableImpl implements Comparable<IntegerComparableImpl> {
 
 	Integer number;
