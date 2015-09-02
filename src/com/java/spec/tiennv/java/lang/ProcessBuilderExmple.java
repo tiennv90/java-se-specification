@@ -3,6 +3,8 @@ package com.java.spec.tiennv.java.lang;
 import java.io.File;
 import java.io.IOException;
 import java.lang.ProcessBuilder.Redirect;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 public class ProcessBuilderExmple {
@@ -26,6 +28,10 @@ public class ProcessBuilderExmple {
 		 assert processBuilder.redirectInput() == Redirect.PIPE;
 		 assert processBuilder.redirectOutput().file() == log;
 		 assert p.getInputStream().read() == -1;
+		 
+		 List<String> params = Arrays.asList("C:" + File.pathSeparator +"DoStuff.exe", "-arg1", "-arg2");
+		 ProcessBuilder b = new ProcessBuilder(params);
+		 b.start();
 		 
 	}
 }
