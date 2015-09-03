@@ -6,6 +6,7 @@ import java.io.IOException;
 
 public class TestFileStream {
 	
+	//low level API should avoid to use
 	public static void main(String args[]) {
 		
 		try (FileOutputStream output = new FileOutputStream("temp.dat")) {
