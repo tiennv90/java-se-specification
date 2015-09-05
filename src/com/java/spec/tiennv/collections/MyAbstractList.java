@@ -2,7 +2,7 @@ package com.java.spec.tiennv.collections;
 
 public abstract class MyAbstractList<E> implements MyList<E> {
 	
-	private int size;
+	protected int size;
 	
 	protected MyAbstractList() {
 	}
