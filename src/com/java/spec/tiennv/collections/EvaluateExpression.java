@@ -5,8 +5,8 @@ import java.util.Stack;
 public class EvaluateExpression {
 
 	public static void main(String[] args) {
-		String expression = "(1 + 2) * 4 - 3";
-		System.out.println(evaluate(expression));
+		String expression = " ( 1 + 2 ) * 4 - 3";
+		System.out.println("Result: " + evaluate(expression));
 	}
 	
 	private static int evaluate(String expression) {
@@ -16,56 +16,76 @@ public class EvaluateExpression {
 		
 		String tokens[] = expression.split(" ");
 		
+		//phase 1: scan tokens
 		for (String token : tokens) {
-			char item = token.charAt(0);
-			if (item == '+' || item =='-') {
-				processAllOperator(operatorStack, operandStack);
-			} else if (item == '*' || item == '/') {
-				processMultiplyAndBreaksOperators(operatorStack, operandStack);
-			} else if (item == '(') {
-				operatorStack.push(item);
-			} else if (item == ')') {
-				processAllOperator(operatorStack, operandStack, item);
-			} else {
-				operandStack.push(new Integer(item));
-			}
-		}
-		return 0;
-	}
-
-	private static void processAllOperator(Stack<Character> operatorStack,
-			Stack<Integer> operandStack, Character stopCondition) {
-		if (stopCondition != null) {
 			
-		} else {
-			int result;
-			int firstNumber = operandStack.pop();
-			char operator = operatorStack.pop();
-			int secondNumber = operandStack.pop();
-			switch (operator) {
-			case '+':
-				result = firstNumber + secondNumber;
-			case '-':
-				result = firstNumber - secondNumber;
-			case '*':
-				result = firstNumber * secondNumber;
-			case '/':
-				result = firstNumber / secondNumber;
+			if (token.length() == 0) {
+				continue;
+			}
+			
+			char item = token.trim().charAt(0);
+			if (item == '+' || item =='-') {
+				//process +, - *, / in the top of operator stack
+				while (!operatorStack.isEmpty() && 
+						(operatorStack.peek() == '+'||
+						operatorStack.peek() == '-' ||
+						operatorStack.peek() == '*' ||
+						operatorStack.peek() == '/')) {
+					processAnOperator(operandStack, operatorStack);
+				}
+				
+				//put -, + into operator stack
+				operatorStack.push(item);
+			} else if (item == '*' || item == '/') {
+				//process *,/ in the top of operator stack
+				while (!operatorStack.isEmpty() && 
+						(operatorStack.peek() == '*'||
+						operatorStack.peek() == '/')) {
+					processAnOperator(operandStack, operatorStack);
+				}
+				//push * or / into operator stack
+				operatorStack.push(item);
+			} else if (item == '(') {
+				operatorStack.push('(');
+			} else if (item == ')') {
+				//process all operator in stack until seeing '('
+				while (operatorStack.peek() != '(') {
+					processAnOperator(operandStack, operatorStack);
+				}
+				//pop '(' from operator stack
+				operatorStack.pop(); 
+			} else {
+				operandStack.push(new Integer(token));
 			}
 		}
-	}
-
-	private static void processMultiplyAndBreaksOperators(
-			Stack<Character> operatorStack, Stack<Integer> operandStack) {
 		
+		//phase 2 process all remaining operator in the stack
+		while (!operatorStack.isEmpty()) {
+			processAnOperator(operandStack, operatorStack);
+		}
+		
+		return operandStack.pop();
 	}
 
-	private static void processAllOperator(Stack<Character> operatorStack,
-			Stack<Integer> operandStack) {
-		processAllOperator(operatorStack, operandStack, null);
+	private static void processAnOperator(Stack<Integer> operandStack,
+			Stack<Character> operatorStack) {
+		
+		char operator = operatorStack.pop();
+		int firstNumber = operandStack.pop();
+		int secondNumber = operandStack.pop();
+		//System.out.println(secondNumber + " " + operator + " " + firstNumber);
+		
+		if (operator == '+')
+			operandStack.push(secondNumber + firstNumber);
+		else if (operator == '-')
+			operandStack.push(secondNumber - firstNumber);
+		else if (operator == '*')
+			operandStack.push(secondNumber * firstNumber);
+		else if (operator == '/')
+			operandStack.push(secondNumber / firstNumber);
+		
+		System.out.println();
 	}
-
-	private static int isInteger(char value) {
-		return 0;
-	}
+	
+	
 }
