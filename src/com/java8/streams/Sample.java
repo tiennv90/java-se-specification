@@ -3,6 +3,10 @@ package com.java8.streams;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Stream;
+
 import static java.util.stream.Collectors.*;
 
 public class Sample {
@@ -80,6 +84,42 @@ public class Sample {
 //				toList()
 			);
 		System.out.println(nameList2);		
+		
+		Set<String> males = people.stream()
+				.filter(person -> person.getGender() == Gender.MALE)
+				.map(Person::getName)
+				.collect(toSet());
+		System.out.println(males);
+		
+		Map<String, Person> map = people.stream().collect(toMap(
+				person -> person.getName() + ":" + person.getAge(), 
+				person -> person));
+		System.out.println(map);
+		
+		Map<String, List<Person>> map2 = people.stream().collect(groupingBy(Person::getName));
+		map2.forEach((k, v) -> 
+			System.out.println(k + " -- " + v)
+		);
+		
+		//find the first person whose name is four letters but is older than 25
+		System.out.println(
+			people.stream()
+				.filter(Sample::is4letters)
+				.filter(person -> person.getAge() > 25)
+				.findFirst());
+		
+		//infinite collection
+		Stream.iterate(1,  e -> e + 1)
+			.filter(e -> e % 2 ==0)
+			.limit(10)
+			.forEach(System.out::println);
+		
+		
+	}
+	
+	public static boolean is4letters(Person person) {
+		System.out.println("Called for " + person);
+		return person.getName().length() == 4;
 	}
 
 	public static List<Person> createPeople() {
